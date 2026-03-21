@@ -1,0 +1,16 @@
+.DS_Store
+node_modules
+dist
+.env
+.env.*
+.cache
+.vscode
+
+# Client
+client/node_modules
+client/dist
+
+# Server
+server/node_modules
+server/dist
+

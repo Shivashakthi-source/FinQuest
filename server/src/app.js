@@ -1,0 +1,63 @@
+require("dotenv").config();
+
+const express = require("express");
+const cors = require("cors");
+const session = require("express-session");
+
+const userRoutes = require("./routes/userRoutes");
+const expenseRoutes = require("./routes/expenseRoutes");
+const statsRoutes = require("./routes/statsRoutes");
+const incomeRoutes = require("./routes/incomeRoutes");
+const budgetRoutes = require("./routes/budgetRoutes");
+
+const app = express();
+
+app.use(express.json());
+
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:5173",
+    credentials: true
+  })
+);
+
+app.use(
+  session({
+    name: process.env.SESSION_COOKIE_NAME || "finquest.sid",
+    secret: process.env.SESSION_SECRET || "dev-session-secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.COOKIE_SECURE === "true",
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+    }
+  })
+);
+
+app.get("/health", (req, res) => {
+  res.json({ ok: true });
+});
+
+app.use("/api/auth", userRoutes);
+app.use("/api/expenses", expenseRoutes);
+app.use("/api/stats", statsRoutes);
+app.use("/api/income", incomeRoutes);
+app.use("/api/budget", budgetRoutes);
+
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// Basic error handler (keeps errors readable in development)
+app.use((err, req, res, next) => {
+  // eslint-disable-next-line no-unused-vars
+  const _ = next;
+  // eslint-disable-next-line no-console
+  console.error(err);
+  res.status(err.statusCode || 500).json({ message: err.message || "Server error" });
+});
+
+module.exports = app;
+
