@@ -18,17 +18,11 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://fin-quest-azure.vercel.app",
   "https://fin-quest-git-main-shivashakthi-sources-projects.vercel.app",
-  "https://fin-quest-dgwhe22la-shivashakthi-sources-projects.vercel.app"
+  "https://fin-quest-dgwhe221a-shivashakthi-sources-projects.vercel.app"
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("CORS blocked"));
-    }
-  },
+  origin: allowedOrigins,
   credentials: true
 }));
 

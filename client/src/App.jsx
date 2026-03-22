@@ -90,11 +90,11 @@ export default function App() {
                 <Navigate to="/dashboard" replace />
               ) : (
                 <Register
-                  onAuthed={(u) => {
-                    setStoredUser(u);
-                    setUser(u);
-                    navigate("/dashboard", { replace: true });
-                  }}
+                onAuthed={(user) => {
+                  setStoredUser(user)
+                  setUser(user)
+                  navigate("/dashboard", { replace: true });
+                }}
                 />
               )
             }

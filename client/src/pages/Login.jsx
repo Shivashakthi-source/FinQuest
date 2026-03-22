@@ -12,7 +12,11 @@ export default function Login({ onAuthed }) {
 
     try {
       const user = await login(form);
-      onAuthed?.(user);
+
+      // ⏳ wait for cookie to be stored properly
+      setTimeout(() => {
+        onAuthed?.(user);
+      }, 200);
     } catch (err) {
       setStatus({
         loading: false,
